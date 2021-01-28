@@ -8,4 +8,5 @@
 /projectSpace/GIT_PREVIOUS_SUCCESSFUL_COMMIT
 /redis/dump.rdb
 /redis/logs/
-/elasticSearch
+/elasticSearch/*
+!/elasticSearch/.gitkeep
