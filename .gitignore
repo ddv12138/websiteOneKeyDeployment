@@ -1,0 +1,11 @@
+/jenkins/
+!/pgData
+/pgData/*
+!/pgData/pg_hba.conf
+/projectSpace/website-source/
+/projectSpace/website-update-check.sh
+/projectSpace/update-check.log
+/projectSpace/GIT_PREVIOUS_SUCCESSFUL_COMMIT
+/redis/dump.rdb
+/redis/logs/
+/elasticSearch

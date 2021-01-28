@@ -1,0 +1,84 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      TZ: "Asia/Shanghai"
+      POSTGRES_PASSWORD: ${postgre_password}
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes: 
+      - "./pgData:/var/lib/postgresql/data"
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis/redis.conf:/usr/local/etc/redis/redis.conf"
+      - "./redis/logs/:/var/log/redis/"
+      - "./redis/:/var/lib/redis/"
+    environment:
+      TZ: "Asia/Shanghai"
+    command: 
+      /bin/bash -c "redis-server /usr/local/etc/redis/redis.conf"
+  ElasticSearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    restart: always
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - TZ="Asia/Shanghai"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticSearch/data:/usr/share/elasticsearch/data
+    network_mode: host
+    #  elasticHD:
+    #    image: containerize/elastichd
+    #    network_mode: host
+    #    restart: always
+    #    environment:
+    #      TZ: "Asia/Shanghai"
+  phpRedisAdmin:
+    image: erikdubbelboer/phpredisadmin
+    ports:
+      - "6380:80"
+    restart: always
+    environment:
+      ADMIN_USER : admin
+      ADMIN_PASS : admin
+      REDIS_1_HOST : ddvudo.buzz
+      REDIS_1_NAME : websiteRedis
+      REDIS_1_PORT : 6379
+      REDIS_1_AUTH : liukang951006
+      TZ: "Asia/Shanghai"
+      #  ProxyPool:
+      #    image: jhao104/proxy_pool:latest
+      #    network_mode: host
+      #    environment:
+      #      TZ: "Asia/Shanghai"
+      #      DB_CONN: redis://:liukang951006@127.0.0.1:6379/1
+  kibana:
+    image: kibana:7.9.3
+    network_mode: host
+    restart: always
+    environment:
+      TZ: "Asia/Shanghai"
+      ELASTICSEARCH_HOSTS: http://127.0.0.1:9200
+      I18N_LOCALE: zh-CN
+#  jenkins:
+#    image: jenkins/jenkins:lts
+#    restart: always
+#    ports: 
+#      - "8001:8080"
+#    volumes: 
+#      - "./jenkins/:/var/jenkins_home"
