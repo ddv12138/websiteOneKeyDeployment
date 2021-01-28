@@ -17,5 +17,6 @@ projectSpace目录存放项目相关文件，包括源码目录，构建结果�
     1. 自动拉取源码
     2. 自动检测java环境，~~没有则安装openjdk8，仅支持yum源安装~~ 换成docker部署，openjdk1.8
     3. 自动在该目录下输出定时任务脚本，~~并自动添加到crontab定时任务~~ 不使用crontab,换成systemctrl管理
-    4. 自动生成系统systemctl服务并部署，使支持通过systemctl enable/disable/start/stop/restart website.service来管理服务
-* 生成的定时任务脚本为website-update-check.sh，该脚本每次运行都会去源码目录下执行git pull，然后检测git log，如果有新的提交，就会使用docker调用maven镜像构建项目然后自动重启，默认每分钟检测一次，每次检测的日志输出会自动保存到/projectSpace/update-check.log
+    4. 自动生成系统systemctl服务并部署，使支持通过 `systemctl enable/disable/start/stop/restart website.service` 来管理服务
+* 生成的定时任务脚本为website-update-check.sh，该脚本每次运行都会去源码目录下执行git pull，然后检测git log，如果有新的提交，就会使用docker调用maven镜像构建项目然后自动重启，默认每分钟检测一次~~，每次检测的日志输出会自动保存到/projectSpace/update-check.log~~  
+日志通过`journalctl -u cron-website.service`查看
